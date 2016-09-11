@@ -62,6 +62,7 @@ testThatLearnerCanTrainPredict = function(lrn, task, hyperpars, pred.type = "res
   lrn = setPredictType(lrn, pred.type)
 
   expect_output(info = info, print(lrn), lrn$id)
+
   m = train(lrn, task)
   p = predict(m, task)
   expect_true(info = info, !is.na(performance(pred = p, task = task)))
@@ -70,6 +71,14 @@ testThatLearnerCanTrainPredict = function(lrn, task, hyperpars, pred.type = "res
   if (pred.type == "se") {
     s = p$data$se
     expect_numeric(info = info, s, lower = 0, finite = TRUE, any.missing = FALSE, len = getTaskSize(task))
+  }
+  # check that quantile works and is > 0
+  if (pred.type == "quantile") {
+    quantiles = p$data[,2:ncol(p$data)]
+    for (i in 1:ncol(quantiles)){
+      expect_numeric(info = info, quantiles[,1], lower = Inf, finite = TRUE,
+                     any.missing = FALSE, len = getTaskSize(task))
+    }
   }
 
   # check that probs works, and are in [0,1] and sum to 1

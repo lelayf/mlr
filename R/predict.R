@@ -51,6 +51,9 @@ predict.WrappedModel = function(object, task, newdata, subset = NULL, ...) {
     assertClass(task, classes = "Task")
     size = getTaskSize(task)
   } else {
+    ##FIXME: Better way to make into a data frame? This doesn't protect against a lot of things
+    if (xts::is.xts(newdata))
+      newdata = as.data.frame(newdata, row.names = as.character(index(newdata)))
     assertDataFrame(newdata, min.rows = 1L)
     if (class(newdata)[1] != "data.frame") {
       warningf("Provided data for prediction is not a pure data.frame but from class %s, hence it will be converted.",  class(newdata)[1])

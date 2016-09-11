@@ -41,7 +41,7 @@ A list of publications that cite mlr can be found in the [wiki](https://github.c
 Introduction
 ============
 
-R does not define a standardized interface for all its machine learning
+R does not define a Standardized interface for all its machine learning
 algorithms. Therefore, for any non-trivial experiments, you need to write
 lengthy, tedious and error-prone wrappers to call the different algorithms and
 unify their respective output. Additionally you need to implement infrastructure
