@@ -133,18 +133,34 @@ doResampleIteration = function(learner, task, rin, i, measures, weights, model, 
   pred.train = NULL
   pred.test = NULL
   pp = rin$desc$predict
+  train.task = task
   if (pp == "train") {
-    pred.train = predict(m, task, subset = train.i)
+    if (!is.null(m$learner.model$next.model)) {
+      if (!is.null(m$learner.model$next.model$train.task)) {
+        # the learner was wrapped in a sampling wrapper
+        train.task = m$learner.model$next.model$train.task
+        train.i = m$learner.model$next.model$subset
+      }
+    }
+    pred.train = predict(m, train.task, subset = train.i)
     if (!is.na(pred.train$error)) err.msgs[2L] = pred.train$error
-    ms.train = vnapply(measures, function(pm) performance(task = task, model = m, pred = pred.train, measures = pm))
+    ms.train = vnapply(measures, function(pm) performance(task = train.task, model = m, pred = pred.train, measures = pm))
   } else if (pp == "test") {
     pred.test = predict(m, task, subset = test.i)
     if (!is.na(pred.test$error)) err.msgs[2L] = pred.test$error
     ms.test = vnapply(measures, function(pm) performance(task = task, model = m, pred = pred.test, measures = pm))
   } else { # "both"
-    pred.train = predict(m, task, subset = train.i)
+    if (!is.null(m$learner.model$next.model)) {
+      if (!is.null(m$learner.model$next.model$train.task)) {
+        # the learner was wrapped in a sampling wrapper
+        train.task = m$learner.model$next.model$train.task
+        train.i = m$learner.model$next.model$subset
+      }
+    }
+    pred.train = predict(m, train.task, subset = train.i)
     if (!is.na(pred.train$error)) err.msgs[2L] = pred.train$error
-    ms.train = vnapply(measures, function(pm) performance(task = task, model = m, pred = pred.train, measures = pm))
+    ms.train = vnapply(measures, function(pm) performance(task = train.task, model = m, pred = pred.train, measures = pm))
+
     pred.test = predict(m, task, subset = test.i)
     if (!is.na(pred.test$error)) err.msgs[2L] = paste(err.msgs[2L], pred.test$error)
     ms.test = vnapply(measures, function(pm) performance(task = task, model = m, pred = pred.test, measures = pm))
