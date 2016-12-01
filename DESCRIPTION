@@ -53,7 +53,8 @@ Imports:
     survival,
     utils,
     xts,
-    zoo
+    zoo,
+    stringr
 Suggests:
     ada,
     adabag,

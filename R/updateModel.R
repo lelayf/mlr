@@ -166,6 +166,15 @@ updateModel = function(object, task, newdata, subset, weights = NULL, ...){
 #'   Model produced by training.
 #' @param .newdata [\code{data.frame}]\cr
 #'   New data to predict. Does not include target column.
+#' @param .task [\code{Task}]
+#'   The model's task
+#' @param .truth [\code{data.frame}]
+#'   A vector of data that is to be predicted.
+#' @param .weights [\code{data.frame}]
+#'   Optional, non-negative case weight vector to be used during fitting.
+#'   If given, must be of same length as \code{subset} and in corresponding order.
+#'   By default \code{NULL} which means no weights are used unless specified in the task (\code{\link{Task}}).
+#'   Weights from the task will be overwritten.
 #' @param ... [any]\cr
 #'   Additional parameters, which need to be passed to the underlying predict function.
 #' @return
@@ -188,7 +197,7 @@ updateModel = function(object, task, newdata, subset, weights = NULL, ...){
 #'     \dQuote{prob}. The columns must be named with the class labels.
 #'  }
 #' @export
-updateLearner = function(.learner, .model, .newdata, .task, .truth, ...) {
+updateLearner = function(.learner, .model, .newdata, .task, .truth, .weights, ...) {
   lmod = getLearnerModel(.model)
   if (inherits(lmod, "NoFeaturesModel")) {
     predict_nofeatures(.model, .newdata)
@@ -198,7 +207,8 @@ updateLearner = function(.learner, .model, .newdata, .task, .truth, ...) {
     UseMethod("updateLearner")
   }
 }
-updateLearner2 = function(.learner, .model, .newdata, .task, .truth, ...) {
+
+updateLearner2 = function(.learner, .model, .newdata, .task, .truth, .weights, ...) {
   # if we have that option enabled, set factor levels to complete levels from task
   if (.learner$fix.factors.prediction) {
     fls = .model$factor.levels

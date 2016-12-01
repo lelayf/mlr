@@ -51,9 +51,9 @@ trainLearner.fcregr.nnetar = function(.learner, .task, .subset, .weights = NULL,
 }
 
 #' @export
-updateLearner.fcregr.nnetar = function(.learner, .model, .newdata, .task, .weights = NULL, ...){
+updateLearner.fcregr.nnetar = function(.learner, .model, .newdata, .task, .truth, .weights = NULL, ...) {
   target = getTaskTargetNames(.task)
-  data = ts(.newdata[,target], start = 1, frequency = .task$task.desc$frequency)
+  data = ts(.truth, start = 1, frequency = .task$task.desc$frequency)
   if (is.null(weights)){
     forecast::nnetar(y = data, model = .model$learner.model,...)
   } else {

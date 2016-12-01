@@ -57,7 +57,7 @@ trainLearner.fcregr.auto.arima = function(.learner, .task, .subset, .weights = N
 }
 
 #' @export
-updateLearner.fcregr.auto.arima = function(.learner, .model, .newdata, .task, .truth, ...){
+updateLearner.fcregr.auto.arima = function(.learner, .model, .newdata, .task, .truth, .weights = NULL, ...){
 
   target = ts(.truth, start = 1, frequency = .task$task.desc$frequency)
   if (ncol(.newdata) == 0){

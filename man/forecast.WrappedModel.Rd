@@ -51,10 +51,10 @@ forecast(classif.train, h = 10)
 
 # predict now probabiliies instead of class labels
 lrn = makeLearner("classif.lda", predict.type = "prob")
-model = train(lrn, iris.task, subset = train.set)
-p = predict(model, task = iris.task, subset = test.set)
-print(p)
-getPredictionProbabilities(p)
+model = train(lrn, classif.task)
+f = forecast(model, h = 10)
+print(f)
+getPredictionProbabilities(f)
 }
 \seealso{
 Other predict: \code{\link{asROCRPrediction}},

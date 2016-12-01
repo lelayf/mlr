@@ -73,7 +73,7 @@ predictLearner.fcregr.Arima = function(.learner, .model, .newdata, ...){
 
 
 #' @export
-updateLearner.fcregr.Arima = function(.learner, .model, .newdata, .task, .truth, ...){
+updateLearner.fcregr.Arima = function(.learner, .model, .newdata, .task, .truth, .weights = NULL, ...) {
   target = ts(.truth, start = 1, frequency = .task$task.desc$frequency)
   if (ncol(.newdata) == 0){
     updated = forecast::Arima(y = target, model = .model$learner.model,...)

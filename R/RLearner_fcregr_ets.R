@@ -56,9 +56,9 @@ trainLearner.fcregr.ets = function(.learner, .task, .subset, .weights = NULL, ..
 }
 
 #' @export
-updateLearner.fcregr.ets = function(.learner, .model, .newdata, .task, ...){
+updateLearner.fcregr.ets = function(.learner, .model, .newdata, .task, .truth, .weights = NULL, ...) {
   target = getTaskTargetNames(.task)
-  data = ts(.newdata[,target], start = 1, frequency = .task$task.desc$frequency)
+  data = ts(.truth, start = 1, frequency = .task$task.desc$frequency)
   forecast::ets(y = data, model = .model$learner.model,...)
 }
 

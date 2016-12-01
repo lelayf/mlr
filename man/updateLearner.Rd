@@ -4,7 +4,7 @@
 \alias{updateLearner}
 \title{Update an R learner with new data.}
 \usage{
-updateLearner(.learner, .model, .newdata, .task, .truth, ...)
+updateLearner(.learner, .model, .newdata, .task, .truth, .weights, ...)
 }
 \arguments{
 \item{.learner}{[\code{\link{RLearner}}]\cr
@@ -15,6 +15,18 @@ Model produced by training.}
 
 \item{.newdata}{[\code{data.frame}]\cr
 New data to predict. Does not include target column.}
+
+\item{.task}{[\code{Task}]
+The model's task}
+
+\item{.truth}{[\code{data.frame}]
+A vector of data that is to be predicted.}
+
+\item{.weights}{[\code{data.frame}]
+Optional, non-negative case weight vector to be used during fitting.
+If given, must be of same length as \code{subset} and in corresponding order.
+By default \code{NULL} which means no weights are used unless specified in the task (\code{\link{Task}}).
+Weights from the task will be overwritten.}
 
 \item{...}{[any]\cr
 Additional parameters, which need to be passed to the underlying predict function.}

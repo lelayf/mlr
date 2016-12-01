@@ -1,4 +1,13 @@
 
+#' @title  Forecasting generic
+#'
+#' @description Forecasts using a fitted model
+#'
+#' @param object
+#'  A model to be used for forecasting
+#'
+#' @param ...
+#'  Used to pass package specific parameters
 #' @export
 forecast = function(object, ...){
   UseMethod("forecast")
@@ -45,10 +54,10 @@ forecast = function(object, ...){
 #'
 #' # predict now probabiliies instead of class labels
 #' lrn = makeLearner("classif.lda", predict.type = "prob")
-#' model = train(lrn, iris.task, subset = train.set)
-#' p = predict(model, task = iris.task, subset = test.set)
-#' print(p)
-#' getPredictionProbabilities(p)
+#' model = train(lrn, classif.task)
+#' f = forecast(model, h = 10)
+#' print(f)
+#' getPredictionProbabilities(f)
 forecast.WrappedModel = function(object, newdata = NULL, task, h = 10, ...){
   model = object
   learner = model$learner
@@ -56,7 +65,7 @@ forecast.WrappedModel = function(object, newdata = NULL, task, h = 10, ...){
 
   assertClass(model, classes = "WrappedModel")
   if (any(c("fcregr","mfcregr") %in% model$learner$type ))
-    if (!is.missing(newdata))
+    if (!missing(newdata))
       return(predict(object, newdata = newdata))
     else
       return(predict(object, task = task))
