@@ -32,7 +32,7 @@ makeRLearner.classif.xgboost = function() {
       makeIntegerLearnerParam(id = "verbose", default = 1L, lower = 0L, upper = 2L, tunable = FALSE),
       makeIntegerLearnerParam(id = "print.every.n", default = 1L, lower = 1L, tunable = FALSE,
         requires = quote(verbose == 1L)),
-      makeIntegerLearnerParam(id = "early.stop.round", default = NULL, lower = 1L, special.vals = list(NULL)),
+      makeIntegerLearnerParam(id = "early_stopping_rounds", default = NULL, lower = 1L, special.vals = list(NULL)),
       makeLogicalLearnerParam(id = "maximize", default = NULL, special.vals = list(NULL), tunable = FALSE)
     ),
     par.vals = list(nrounds = 1L, verbose = 0L),
@@ -101,7 +101,7 @@ predictLearner.classif.xgboost = function(.learner, .model, .newdata, ...) {
       .learner$par.vals$objective = "multi:softprob"
   }
 
-  p = xgboost::predict(m, newdata = data.matrix(.newdata), ...)
+  p = predict(m, newdata = data.matrix(.newdata), ...)
 
 
   if (nc == 2L) { #binaryclass
